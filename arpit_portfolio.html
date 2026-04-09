@@ -18,6 +18,8 @@
       --orange: #ff6a00;
       --orange2: #ff8c00;
       --blue: #00d4ff;
+      --electric: #00f7ff;
+      --yellow-bright: #fbff00;
       --purple: #a855f7;
       --green: #00ff9d;
       --red: #ff3c3c;
@@ -394,10 +396,7 @@
       font-weight: 500;
     }
 
-    .hero-title::before {
-      content: '// ';
-      color: var(--text3);
-    }
+
 
     .hero-tagline {
       font-size: clamp(0.75rem, 1.5vw, 0.95rem);
@@ -746,41 +745,553 @@
       width: 16px;
     }
 
-    /* SKILLS */
-    .skills-grid {
+    /* ===================== SKILLS REDESIGN ===================== */
+
+    /* Category filter bar */
+    .skills-filter-bar {
       display: flex;
+      gap: 0.6rem;
+      margin-bottom: 2.5rem;
       flex-wrap: wrap;
-      gap: 1.2rem;
     }
 
-    .skill-card {
-      color: var(--orange);
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-shadow: 0 0 8px rgba(255, 106, 0, 0.4);
-      border: 1px solid var(--orange);
-      padding: 0.8rem 1.5rem;
-      background: rgba(255, 106, 0, 0.05);
-      box-shadow: var(--glow-orange);
-      transition: all 0.3s ease;
+    .skills-filter-btn {
+      font-family: var(--font);
+      font-size: 0.68rem;
+      padding: 0.45rem 1rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text3);
       cursor: none;
+      transition: all 0.3s ease;
+      letter-spacing: 0.04em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skills-filter-btn::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .skills-filter-btn:hover,
+    .skills-filter-btn.active {
+      color: var(--orange);
+      border-color: var(--orange);
+      background: rgba(255, 106, 0, 0.05);
+    }
+
+    .skills-filter-btn.active::before {
+      transform: scaleX(1);
+    }
+
+    .skills-filter-btn i {
+      margin-right: 0.4rem;
+    }
+
+    /* Skills categories container */
+    .skills-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    /* Individual skill category */
+    .skill-category {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .skill-category.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .skill-category-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .skill-category-icon {
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: fadeUp 0.5s ease forwards;
+      border: 1px solid var(--orange);
+      font-size: 0.9rem;
+      color: var(--orange);
+      background: rgba(255, 106, 0, 0.06);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .skill-category-icon::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    .skill-category:hover .skill-category-icon::after {
+      border-color: rgba(255, 106, 0, 0.3);
+    }
+
+    .skill-category-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      font-weight: 600;
+    }
+
+    .skill-category-count {
+      margin-left: auto;
+      font-size: 0.6rem;
+      color: var(--text3);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.2rem 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Skills grid within category */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    /* Individual skill card */
+    .skill-card {
+      background: rgba(14, 14, 14, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 1.4rem;
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+      transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
       opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .skill-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 106, 0, 0.03), transparent);
+      transition: left 0.6s ease;
     }
 
     .skill-card:hover {
-      background: var(--orange);
-      color: #000;
-      text-shadow: none;
-      box-shadow: 0 0 25px rgba(255, 106, 0, 0.6);
-      transform: translateY(-3px);
+      border-color: rgba(255, 106, 0, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 106, 0, 0.08);
     }
 
+    .skill-card:hover::before {
+      opacity: 1;
+    }
+
+    .skill-card:hover::after {
+      left: 150%;
+    }
+
+    /* Blue variant for ML category */
+    .skill-card[data-color="blue"]::before {
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    }
+
+    .skill-card[data-color="blue"]::after {
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.03), transparent);
+    }
+
+    .skill-card[data-color="blue"]:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 212, 255, 0.08);
+    }
+
+    /* Electric Blue variant */
+    .skill-card[data-color="electric"]::before {
+      background: linear-gradient(90deg, transparent, var(--electric), transparent);
+    }
+
+    .skill-card[data-color="electric"]::after {
+      background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.03), transparent);
+    }
+
+    .skill-card[data-color="electric"]:hover {
+      border-color: rgba(0, 247, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 247, 255, 0.08);
+    }
+
+    /* Yellow variant */
+    .skill-card[data-color="yellow"]::before {
+      background: linear-gradient(90deg, transparent, var(--yellow-bright), transparent);
+    }
+
+    .skill-card[data-color="yellow"]::after {
+      background: linear-gradient(90deg, transparent, rgba(251, 255, 0, 0.03), transparent);
+    }
+
+    .skill-card[data-color="yellow"]:hover {
+      border-color: rgba(251, 255, 0, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(251, 255, 0, 0.08);
+    }
+
+    /* Purple variant for Web Dev category */
+    .skill-card[data-color="purple"]::before {
+      background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    }
+
+    .skill-card[data-color="purple"]::after {
+      background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.03), transparent);
+    }
+
+    .skill-card[data-color="purple"]:hover {
+      border-color: rgba(168, 85, 247, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(168, 85, 247, 0.08);
+    }
+
+    /* Green variant for Tools category */
+    .skill-card[data-color="green"]::before {
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+    }
+
+    .skill-card[data-color="green"]::after {
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.03), transparent);
+    }
+
+    .skill-card[data-color="green"]:hover {
+      border-color: rgba(0, 255, 157, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 157, 0.08);
+    }
+
+    /* Skill card top row: icon + ring */
+    .skill-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .skill-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--orange);
+      background: rgba(255, 106, 0, 0.05);
+      border: 1px solid rgba(255, 106, 0, 0.15);
+      transition: all 0.3s;
+    }
+
+    .skill-card:hover .skill-icon {
+      background: rgba(255, 106, 0, 0.12);
+      box-shadow: 0 0 12px rgba(255, 106, 0, 0.2);
+    }
+
+    .skill-icon.blue {
+      color: var(--blue);
+      background: rgba(0, 212, 255, 0.05);
+      border-color: rgba(0, 212, 255, 0.15);
+    }
+
+    .skill-card:hover .skill-icon.blue {
+      background: rgba(0, 212, 255, 0.12);
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
+    }
+
+    .skill-icon.purple {
+      color: var(--purple);
+      background: rgba(168, 85, 247, 0.05);
+      border-color: rgba(168, 85, 247, 0.15);
+    }
+
+    .skill-card:hover .skill-icon.purple {
+      background: rgba(168, 85, 247, 0.12);
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+    }
+
+    .skill-icon.green {
+      color: var(--green);
+      background: rgba(0, 255, 157, 0.05);
+      border-color: rgba(0, 255, 157, 0.15);
+    }
+
+    .skill-card:hover .skill-icon.green {
+      background: rgba(0, 255, 157, 0.12);
+      box-shadow: 0 0 12px rgba(0, 255, 157, 0.2);
+    }
+
+    .skill-icon.electric {
+      color: var(--electric);
+      background: rgba(0, 247, 255, 0.05);
+      border-color: rgba(0, 247, 255, 0.15);
+    }
+
+    .skill-card:hover .skill-icon.electric {
+      background: rgba(0, 247, 255, 0.12);
+      box-shadow: 0 0 12px rgba(0, 247, 255, 0.2);
+    }
+
+    .skill-icon.yellow {
+      color: var(--yellow-bright);
+      background: rgba(251, 255, 0, 0.05);
+      border-color: rgba(251, 255, 0, 0.15);
+    }
+
+    .skill-card:hover .skill-icon.yellow {
+      background: rgba(251, 255, 0, 0.12);
+      box-shadow: 0 0 12px rgba(251, 255, 0, 0.2);
+    }
+
+    /* SVG progress ring */
+    .skill-ring-wrap {
+      position: relative;
+      width: 42px;
+      height: 42px;
+    }
+
+    .skill-ring {
+      transform: rotate(-90deg);
+    }
+
+    .skill-ring-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.06);
+      stroke-width: 3;
+    }
+
+    .skill-ring-fill {
+      fill: none;
+      stroke: var(--orange);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 113;
+      stroke-dashoffset: 113;
+      transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: drop-shadow(0 0 3px rgba(255, 106, 0, 0.4));
+    }
+
+    .skill-ring-fill.blue {
+      stroke: var(--blue);
+      filter: drop-shadow(0 0 3px rgba(0, 212, 255, 0.4));
+    }
+
+    .skill-ring-fill.purple {
+      stroke: var(--purple);
+      filter: drop-shadow(0 0 3px rgba(168, 85, 247, 0.4));
+    }
+
+    .skill-ring-fill.green {
+      stroke: var(--green);
+      filter: drop-shadow(0 0 3px rgba(0, 255, 157, 0.4));
+    }
+
+    .skill-ring-fill.electric {
+      stroke: var(--electric);
+      filter: drop-shadow(0 0 3px rgba(0, 247, 255, 0.4));
+    }
+
+    .skill-ring-fill.yellow {
+      stroke: var(--yellow-bright);
+      filter: drop-shadow(0 0 3px rgba(251, 255, 0, 0.4));
+    }
+
+    .skill-ring-pct {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: var(--text2);
+    }
+
+    /* Skill name & level */
     .skill-name {
-      margin: 0;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.01em;
+    }
+
+    .skill-level {
+      font-size: 0.62rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Bottom bar (experience indicator) */
+    .skill-exp-bar {
+      margin-top: 0.8rem;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .skill-exp-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--orange), rgba(255, 106, 0, 0.3));
+      transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: 1px;
+    }
+
+    .skill-exp-fill.blue {
+      background: linear-gradient(90deg, var(--blue), rgba(0, 212, 255, 0.3));
+    }
+
+    .skill-exp-fill.purple {
+      background: linear-gradient(90deg, var(--purple), rgba(168, 85, 247, 0.3));
+    }
+
+    .skill-exp-fill.green {
+      background: linear-gradient(90deg, var(--green), rgba(0, 255, 157, 0.3));
+    }
+
+    .skill-exp-fill.electric {
+      background: linear-gradient(90deg, var(--electric), rgba(0, 247, 255, 0.3));
+    }
+
+    .skill-exp-fill.yellow {
+      background: linear-gradient(90deg, var(--yellow-bright), rgba(251, 255, 0, 0.3));
+    }
+
+    /* Animated corner accents on hover */
+    .skill-card .corner-accent {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-color: var(--orange);
+      border-style: solid;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .skill-card:hover .corner-accent {
+      opacity: 1;
+    }
+
+    .corner-accent.tl {
+      top: 4px;
+      left: 4px;
+      border-width: 1px 0 0 1px;
+    }
+
+    .corner-accent.tr {
+      top: 4px;
+      right: 4px;
+      border-width: 1px 1px 0 0;
+    }
+
+    .corner-accent.bl {
+      bottom: 4px;
+      left: 4px;
+      border-width: 0 0 1px 1px;
+    }
+
+    .corner-accent.br {
+      bottom: 4px;
+      right: 4px;
+      border-width: 0 1px 1px 0;
+    }
+
+    .skill-card[data-color="blue"] .corner-accent {
+      border-color: var(--blue);
+    }
+
+    .skill-card[data-color="purple"] .corner-accent {
+      border-color: var(--purple);
+    }
+
+    .skill-card[data-color="green"] .corner-accent {
+      border-color: var(--green);
+    }
+
+    .skill-card[data-color="electric"] .corner-accent {
+      border-color: var(--electric);
+    }
+
+    .skill-card[data-color="yellow"] .corner-accent {
+      border-color: var(--yellow-bright);
+    }
+
+    /* Skills stats bar at the bottom */
+    .skills-stats-bar {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      padding: 1.2rem 1.5rem;
+      background: rgba(10, 10, 10, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+    }
+
+    .skills-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .skills-stat-num {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+    }
+
+    .skills-stat-label {
+      font-size: 0.58rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 768px) {
+      .skills-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      }
+
+      .skills-stats-bar {
+        gap: 1.5rem;
+      }
     }
 
     /* ===================== PROJECTS ===================== */
@@ -904,9 +1415,28 @@
       text-transform: uppercase;
     }
 
-    .project-calendar-icon {
-      font-size: 0.88rem;
-      color: var(--text3);
+    .project-link-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255, 106, 0, 0.1);
+      border: 1px solid rgba(255, 106, 0, 0.3);
+      color: var(--orange);
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: none;
+    }
+
+    .project-link-icon:hover {
+      transform: scale(1.15);
+      background: var(--orange);
+      color: #111;
+      border-color: var(--orange);
+      box-shadow: 0 0 15px rgba(255, 106, 0, 0.4);
     }
 
     .project-header {
@@ -1181,7 +1711,8 @@
       margin-top: 0.75rem;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
       padding-top: 0.6rem;
-      max-height: 130px;
+      padding-bottom: 2rem;
+      max-height: 160px;
       overflow: hidden;
       position: relative;
     }
@@ -1970,7 +2501,7 @@
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
-      <a href="#education">Education</a>
+      <a href="#Education">Education</a>
       <a href="#achievements">Achievements</a>
       <a href="#contact">Contact</a>
       <button id="theme-toggle" title="Toggle theme"><i class="fas fa-sun"></i></button>
@@ -2000,7 +2531,7 @@
       <span class="typed-name" id="typed-name"></span><span class="cursor-blink" id="hero-cursor"></span>
     </h1>
 
-    <div class="hero-title" id="hero-title" style="opacity:0">Data Analyst</div>
+    <div class="hero-title" id="hero-title" style="opacity:1"></div>
     <p class="hero-tagline" id="hero-tagline" style="opacity:0">
       Turning data into actionable insights — one query at a time.<br />
       Bridging the gap between raw numbers and strategic decisions.
@@ -2060,32 +2591,436 @@
     <div class="section-container">
       <div class="cmd-header reveal"><span class="sym">&gt; $</span> <span class="cmd">skills</span> <span
           class="flag">--view</span> <span class="flag">--all</span></div>
-      <div class="skills-grid" id="skills-grid">
-        <div class="skill-card" style="animation-delay:0.05s">
-          <div class="skill-name">Python</div>
+
+      <!-- Filter Bar -->
+      <div class="skills-filter-bar reveal">
+        <button class="skills-filter-btn active" data-filter="all"><i class="fas fa-layer-group"></i>All</button>
+        <button class="skills-filter-btn" data-filter="data"><i class="fas fa-database"></i>Data Analysis</button>
+        <button class="skills-filter-btn" data-filter="ml"><i class="fas fa-brain"></i>Machine Learning</button>
+        <button class="skills-filter-btn" data-filter="web"><i class="fas fa-code"></i>Web Dev</button>
+        <button class="skills-filter-btn" data-filter="tools"><i class="fas fa-tools"></i>Tools</button>
+      </div>
+
+      <div class="skills-categories" id="skills-categories">
+
+        <!-- DATA ANALYSIS -->
+        <div class="skill-category" data-cat="data">
+          <div class="skill-category-header">
+            <div class="skill-category-icon"
+              style="border-color:var(--electric);color:var(--electric);background:rgba(0,247,255,0.06);"><i
+                class="fas fa-chart-bar"></i></div>
+            <span class="skill-category-label">Data Analysis</span>
+            <span class="skill-category-count">4 skills</span>
+          </div>
+          <div class="skills-grid">
+            <div class="skill-card" data-color="electric" style="animation-delay:0.05s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon electric"><i class="fab fa-python"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill electric" cx="21" cy="21" r="18" data-pct="90"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">90%</span>
+                </div>
+              </div>
+              <div class="skill-name">Python</div>
+              <div class="skill-level">Advanced</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill electric" data-width="90"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="electric" style="animation-delay:0.1s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon electric"><i class="fas fa-database"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill electric" cx="21" cy="21" r="18" data-pct="65"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">65%</span>
+                </div>
+              </div>
+              <div class="skill-name">SQL</div>
+              <div class="skill-level">Intermediate</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill electric" data-width="65"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="electric" style="animation-delay:0.15s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon electric"><i class="fas fa-file-excel"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill electric" cx="21" cy="21" r="18" data-pct="65"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">65%</span>
+                </div>
+              </div>
+              <div class="skill-name">Excel</div>
+              <div class="skill-level">Intermediate</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill electric" data-width="65"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="electric" style="animation-delay:0.2s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon electric"><i class="fas fa-chart-line"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill electric" cx="21" cy="21" r="18" data-pct="82"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">82%</span>
+                </div>
+              </div>
+              <div class="skill-name">Power BI</div>
+              <div class="skill-level">Advanced</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill electric" data-width="82"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="skill-card" style="animation-delay:0.1s">
-          <div class="skill-name">SQL</div>
+
+        <!-- MACHINE LEARNING -->
+        <div class="skill-category" data-cat="ml">
+          <div class="skill-category-header">
+            <div class="skill-category-icon"
+              style="border-color:var(--yellow-bright);color:var(--yellow-bright);background:rgba(251,255,0,0.06);"><i
+                class="fas fa-brain"></i></div>
+            <span class="skill-category-label">Machine Learning</span>
+            <span class="skill-category-count">4 skills</span>
+          </div>
+          <div class="skills-grid">
+            <div class="skill-card" data-color="yellow" style="animation-delay:0.2s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon yellow"><i class="fas fa-robot"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill yellow" cx="21" cy="21" r="18" data-pct="78"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">78%</span>
+                </div>
+              </div>
+              <div class="skill-name">Machine Learning</div>
+              <div class="skill-level">Intermediate</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill yellow" data-width="78"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="yellow" style="animation-delay:0.25s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon yellow"><i class="fas fa-project-diagram"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill yellow" cx="21" cy="21" r="18" data-pct="70"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">70%</span>
+                </div>
+              </div>
+              <div class="skill-name">SVM</div>
+              <div class="skill-level">Intermediate</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill yellow" data-width="70"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="yellow" style="animation-delay:0.3s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon yellow"><i class="fas fa-tree"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill yellow" cx="21" cy="21" r="18" data-pct="69"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">69%</span>
+                </div>
+              </div>
+              <div class="skill-name">XGBoost</div>
+              <div class="skill-level">Intermediate</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill yellow" data-width="69"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="yellow" style="animation-delay:0.35s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon yellow"><i class="fas fa-flask"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill yellow" cx="21" cy="21" r="18" data-pct="80"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">80%</span>
+                </div>
+              </div>
+              <div class="skill-name">Flask</div>
+              <div class="skill-level">Advanced</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill yellow" data-width="80"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="skill-card" style="animation-delay:0.15s">
-          <div class="skill-name">Power BI</div>
+
+        <!-- WEB DEVELOPMENT -->
+        <div class="skill-category" data-cat="web">
+          <div class="skill-category-header">
+            <div class="skill-category-icon"
+              style="border-color:var(--purple);color:var(--purple);background:rgba(168,85,247,0.06);"><i
+                class="fas fa-laptop-code"></i></div>
+            <span class="skill-category-label">Web Development</span>
+            <span class="skill-category-count">4 skills</span>
+          </div>
+          <div class="skills-grid">
+            <div class="skill-card" data-color="purple" style="animation-delay:0.3s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon purple"><i class="fab fa-html5"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill purple" cx="21" cy="21" r="18" data-pct="88"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">88%</span>
+                </div>
+              </div>
+              <div class="skill-name">HTML</div>
+              <div class="skill-level">Advanced</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill purple" data-width="88"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="purple" style="animation-delay:0.35s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon purple"><i class="fab fa-css3-alt"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill purple" cx="21" cy="21" r="18" data-pct="85"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">85%</span>
+                </div>
+              </div>
+              <div class="skill-name">CSS</div>
+              <div class="skill-level">Advanced</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill purple" data-width="85"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="purple" style="animation-delay:0.4s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon purple"><i class="fab fa-js-square"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill purple" cx="21" cy="21" r="18" data-pct="75"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">75%</span>
+                </div>
+              </div>
+              <div class="skill-name">JavaScript</div>
+              <div class="skill-level">Intermediate</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill purple" data-width="75"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="purple" style="animation-delay:0.45s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon purple"><i class="fab fa-react"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill purple" cx="21" cy="21" r="18" data-pct="70"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">70%</span>
+                </div>
+              </div>
+              <div class="skill-name">React</div>
+              <div class="skill-level">Intermediate</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill purple" data-width="70"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="skill-card" style="animation-delay:0.2s">
-          <div class="skill-name">Excel</div>
+
+        <!-- TOOLS & PLATFORMS -->
+        <div class="skill-category" data-cat="tools">
+          <div class="skill-category-header">
+            <div class="skill-category-icon"
+              style="border-color:var(--green);color:var(--green);background:rgba(0,255,157,0.06);"><i
+                class="fas fa-wrench"></i></div>
+            <span class="skill-category-label">Tools & Platforms</span>
+            <span class="skill-category-count">4 skills</span>
+          </div>
+          <div class="skills-grid">
+            <div class="skill-card" data-color="green" style="animation-delay:0.45s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon green"><i class="fab fa-github"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill green" cx="21" cy="21" r="18" data-pct="80"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">80%</span>
+                </div>
+              </div>
+              <div class="skill-name">Git & GitHub</div>
+              <div class="skill-level">Advanced</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill green" data-width="80"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="green" style="animation-delay:0.5s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon green"><i class="fas fa-palette"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill green" cx="21" cy="21" r="18" data-pct="90"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">90%</span>
+                </div>
+              </div>
+              <div class="skill-name">Canva</div>
+              <div class="skill-level">Advanced</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill green" data-width="90"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="green" style="animation-delay:0.55s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon green"><i class="fas fa-terminal"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill green" cx="21" cy="21" r="18" data-pct="72"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">72%</span>
+                </div>
+              </div>
+              <div class="skill-name">Jupyter / Colab</div>
+              <div class="skill-level">Intermediate</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill green" data-width="72"></div>
+              </div>
+            </div>
+
+            <div class="skill-card" data-color="green" style="animation-delay:0.6s">
+              <div class="corner-accent tl"></div>
+              <div class="corner-accent tr"></div>
+              <div class="corner-accent bl"></div>
+              <div class="corner-accent br"></div>
+              <div class="skill-card-top">
+                <div class="skill-icon green"><i class="fas fa-rocket"></i></div>
+                <div class="skill-ring-wrap">
+                  <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
+                    <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
+                    <circle class="skill-ring-fill green" cx="21" cy="21" r="18" data-pct="95"></circle>
+                  </svg>
+                  <span class="skill-ring-pct">95%</span>
+                </div>
+              </div>
+              <div class="skill-name">Google Antigravity</div>
+              <div class="skill-level">Expert</div>
+              <div class="skill-exp-bar">
+                <div class="skill-exp-fill green" data-width="95"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="skill-card" style="animation-delay:0.25s">
-          <div class="skill-name">Machine Learning</div>
+
+      </div><!-- end skills-categories -->
+
+      <!-- Stats bar -->
+      <div class="skills-stats-bar reveal">
+        <div class="skills-stat-item">
+          <span class="skills-stat-num" data-target="16" data-suffix="+">0</span>
+          <span class="skills-stat-label">Total Skills</span>
         </div>
-        <div class="skill-card" style="animation-delay:0.3s">
-          <div class="skill-name">HTML</div>
+        <div class="skills-stat-item">
+          <span class="skills-stat-num" style="color:var(--blue)" data-target="4" data-suffix="">0</span>
+          <span class="skills-stat-label">Categories</span>
         </div>
-        <div class="skill-card" style="animation-delay:0.35s">
-          <div class="skill-name">CSS</div>
-        </div>
-        <div class="skill-card" style="animation-delay:0.4s">
-          <div class="skill-name">JavaScript</div>
+        <div class="skills-stat-item">
+          <span class="skills-stat-num" style="color:var(--green)" data-target="82" data-suffix="%">0</span>
+          <span class="skills-stat-label">Avg Proficiency</span>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -2111,25 +3046,26 @@
           <!-- PROJECT 1 -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-year">2024</div>
+            <div class="timeline-year">2026</div>
             <div class="project-card">
               <div class="project-category">
-                <span>Personal Projects</span>
-                <i class="far fa-calendar-alt project-calendar-icon"></i>
+                <span>Academic Projects</span>
+                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
-                <div class="project-title">Customer Behavior Analysis</div>
+                <div class="project-title">Student-Portal</div>
                 <div class="project-num">[01/05]</div>
               </div>
-              <p class="project-desc">Analyzed customer purchase patterns, churn indicators, and segment profiles using
-                Python and SQL. Built interactive Power BI dashboards to surface actionable retention strategies for the
-                business team.</p>
+              <p class="project-desc">Engineered a comprehensive full-stack student dashboard using Flask and
+                PostgreSQL. Centralized academic and administrative services including secure authentication, dynamic
+                course enrollment, and fee tracking. Built interactive JavaScript UI elements for real-time attendance
+                monitoring, significantly reducing manual workflows and improving usability.</p>
               <div class="project-tags">
                 <span class="tag">#Python</span>
-                <span class="tag">#SQL</span>
-                <span class="tag blue">#PowerBI</span>
-                <span class="tag">#EDA</span>
-                <span class="tag blue">#Dashboard</span>
+                <span class="tag purple">#Flask</span>
+                <span class="tag blue">#PostgreSQL</span>
+                <span class="tag yellow">#JavaScript</span>
+                <span class="tag purple">#FullStack</span>
               </div>
               <!-- TERMINAL STATUS BAR (new) -->
               <div class="project-terminal-bar">
@@ -2143,24 +3079,22 @@
           <!-- PROJECT 2 -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-year">2024</div>
+            <div class="timeline-year">2025</div>
             <div class="project-card">
               <div class="project-category">
-                <span>Academic Projects</span>
-                <i class="fas fa-university project-calendar-icon"></i>
+                <span>Machine Learning / Healthcare AI</span>
+                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
-                <div class="project-title">Supply Chain Optimization</div>
+                <div class="project-title">Type 2 Diabetes Prediction</div>
                 <div class="project-num">[02/05]</div>
               </div>
-              <p class="project-desc">Full-stack web application built with Flask and PostgreSQL featuring attendance
-                tracking, grade management, and course enrollment — with a dynamic JavaScript frontend for real-time
-                updates.</p>
+              <p class="project-desc">Built a Hybrid Stacking Ensemble using the Pima Indians Diabetes dataset. Developed a complete pipeline including SMART feature engineering, class imbalance handling with SMOTE, and hyperparameter-tuned SVM, XGBoost, and Extra Trees models.</p>
               <div class="project-tags">
-                <span class="tag purple">#Flask</span>
-                <span class="tag blue">#PostgreSQL</span>
-                <span class="tag">#JavaScript</span>
-                <span class="tag purple">#FullStack</span>
+                <span class="tag">#Python</span>
+                <span class="tag purple">#Scikit-learn</span>
+                <span class="tag">#XGBoost</span>
+                <span class="tag purple">#Ensemble</span>
               </div>
               <div class="project-terminal-bar">
                 <div class="term-dot"></div>
@@ -2173,24 +3107,23 @@
           <!-- PROJECT 3 -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-year">2023</div>
+            <div class="timeline-year">2024</div>
             <div class="project-card">
               <div class="project-category">
                 <span>Personal Projects</span>
-                <i class="far fa-calendar-alt project-calendar-icon"></i>
+                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
-                <div class="project-title">E-commerce Sales Analysis</div>
+                <div class="project-title">Customer Behavior Analysis</div>
                 <div class="project-num">[03/05]</div>
               </div>
-              <p class="project-desc">End-to-end sales intelligence dashboard in Power BI covering regional performance,
-                product trends, YoY growth, and forecasting. Reduced reporting time by 60% through automated refresh
-                pipelines.</p>
+              <p class="project-desc">Analyzed customer purchase patterns, churn indicators, and segment profiles using Python and SQL. Built interactive Power BI dashboards to surface actionable retention strategies for the business team.</p>
               <div class="project-tags">
+                <span class="tag">#Python</span>
+                <span class="tag">#SQL</span>
                 <span class="tag blue">#PowerBI</span>
-                <span class="tag">#DAX</span>
-                <span class="tag blue">#DataModeling</span>
-                <span class="tag">#Forecasting</span>
+                <span class="tag">#EDA</span>
+                <span class="tag blue">#Dashboard</span>
               </div>
               <div class="project-terminal-bar">
                 <div class="term-dot"></div>
@@ -2207,21 +3140,18 @@
             <div class="project-card">
               <div class="project-category">
                 <span>Personal Projects</span>
-                <i class="far fa-calendar-alt project-calendar-icon"></i>
+                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
-                <div class="project-title">Diabetes Prediction Model</div>
+                <div class="project-title">E-commerce Sales Analysis</div>
                 <div class="project-num">[04/05]</div>
               </div>
-              <p class="project-desc">Trained a Support Vector Machine classifier on the PIMA dataset to predict
-                diabetes onset with 82%+ accuracy. Included feature scaling, hyperparameter tuning, and detailed
-                performance evaluation metrics.</p>
+              <p class="project-desc">End-to-end sales intelligence dashboard in Power BI covering regional performance, product trends, YoY growth, and forecasting. Reduced reporting time by 60% through automated refresh pipelines.</p>
               <div class="project-tags">
-                <span class="tag">#Python</span>
-                <span class="tag purple">#ML</span>
-                <span class="tag purple">#SVM</span>
-                <span class="tag">#Scikit-learn</span>
-                <span class="tag purple">#Healthcare</span>
+                <span class="tag blue">#PowerBI</span>
+                <span class="tag">#DAX</span>
+                <span class="tag blue">#DataModeling</span>
+                <span class="tag">#Forecasting</span>
               </div>
               <div class="project-terminal-bar">
                 <div class="term-dot"></div>
@@ -2238,7 +3168,7 @@
             <div class="project-card">
               <div class="project-category">
                 <span>Personal Projects</span>
-                <i class="far fa-calendar-alt project-calendar-icon"></i>
+                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
                 <div class="project-title">Smart Resume Analyzer</div>
@@ -2328,9 +3258,9 @@
   </section>
 
   <!-- EDUCATION -->
-  <section id="education">
+  <section id="Education">
     <div class="section-container">
-      <div class="cmd-header reveal"><span class="sym">&gt; $</span> <span class="cmd">education</span> <span
+      <div class="cmd-header reveal"><span class="sym">&gt; $</span> <span class="cmd">Education</span> <span
           class="flag"></span></div>
       <div class="edu-card reveal">
         <div class="edu-badge-verified">
@@ -2498,7 +3428,7 @@
               <i class="fab fa-linkedin"></i>
               <div class="u-text">
                 <div class="u-lbl">LinkedIn Profile</div>
-                <div class="u-val">linkedin.com/in/arpitm169</div>
+                <div class="u-val">LinkedIn</div>
               </div>
             </a>
 
@@ -2506,7 +3436,7 @@
               <i class="fab fa-github"></i>
               <div class="u-text">
                 <div class="u-lbl">GitHub Repository</div>
-                <div class="u-val">github.com/arpitm169</div>
+                <div class="u-val">GitHub</div>
               </div>
             </a>
           </div>
@@ -2639,18 +3569,97 @@
     const skillObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !skillsFired) {
         skillsFired = true;
-        skillCards.forEach((card, i) => { card.style.opacity = '1'; card.style.animationDelay = (i * 0.07) + 's'; const fill = card.querySelector('.skill-fill'); if (fill) setTimeout(() => { fill.style.width = fill.dataset.pct + '%'; }, i * 80 + 200); });
+        // Animate skill cards in
+        skillCards.forEach((card, i) => {
+          card.style.opacity = '1';
+          card.style.animationDelay = (i * 0.07) + 's';
+        });
+        // Animate SVG rings
+        document.querySelectorAll('.skill-ring-fill').forEach((ring, i) => {
+          const pct = ring.getAttribute('data-pct');
+          if (pct) {
+            const circumference = 2 * Math.PI * 18; // r=18
+            const offset = circumference - (circumference * pct / 100);
+            setTimeout(() => {
+              ring.style.strokeDasharray = circumference;
+              ring.style.strokeDashoffset = offset;
+            }, i * 80 + 200);
+          }
+        });
+        // Animate experience bars
+        document.querySelectorAll('.skill-exp-fill').forEach((fill, i) => {
+          const w = fill.getAttribute('data-width');
+          if (w) setTimeout(() => { fill.style.width = w + '%'; }, i * 80 + 300);
+        });
+        // Animate category reveals
+        document.querySelectorAll('.skill-category').forEach((cat, i) => {
+          setTimeout(() => { cat.classList.add('visible'); }, i * 200);
+        });
+        // Count up stats
+        document.querySelectorAll('.skills-stats-bar [data-target]').forEach(el => {
+          const target = +el.dataset.target, suffix = el.dataset.suffix || '';
+          let cur = 0; const step = Math.ceil(target / 30);
+          const timer = setInterval(() => {
+            cur = Math.min(cur + step, target);
+            el.textContent = cur + suffix;
+            if (cur >= target) clearInterval(timer);
+          }, 40);
+        });
       }
-    }, { threshold: 0.2 });
+    }, { threshold: 0.15 });
     skillObserver.observe(skillsSection);
     const certsSection = document.getElementById('achievements');
     const certObserver = new IntersectionObserver((entries) => { if (entries[0].isIntersecting && !certsFired) { certsFired = true; certCards.forEach(c => { c.style.opacity = '1'; }); } }, { threshold: 0.2 });
     certObserver.observe(certsSection);
 
+    /* ===== SKILLS FILTER BUTTONS ===== */
+    document.querySelectorAll('.skills-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active button
+        document.querySelectorAll('.skills-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        // Show/hide categories
+        document.querySelectorAll('.skill-category').forEach(cat => {
+          if (filter === 'all' || cat.dataset.cat === filter) {
+            cat.style.display = '';
+            setTimeout(() => cat.classList.add('visible'), 50);
+          } else {
+            cat.classList.remove('visible');
+            setTimeout(() => cat.style.display = 'none', 400);
+          }
+        });
+      });
+    });
+
     /* ===== PROJECT DATA FOR SIDE PANEL ===== */
     const projectData = [
       {
-        id: '01', name: 'Customer Behavior', year: '2024', type: 'analysis', stack: 'Python, SQL, BI', pct: 100,
+        id: '01', name: 'Student-Portal', year: '2026', type: 'full-stack', stack: 'Flask, PostgreSQL, JS', pct: 100,
+        badge: 'Completed',
+        termText: '> authenticating student session...',
+        logs: [
+          { ts: '[00:01]', msg: '✓ DB connection established', cls: 'ok' },
+          { ts: '[00:02]', msg: '→ loading student profile...', cls: 'info' },
+          { ts: '[00:03]', msg: '  fee status: verified', cls: '' },
+          { ts: '[00:04]', msg: '✓ courses auto-enrolled', cls: 'ok' },
+          { ts: '[00:05]', msg: '✓ dashboard rendered', cls: 'ok' },
+        ]
+      },
+      {
+        id: '02', name: 'Type 2 Diabetes Stack', year: '2025', type: 'ml ensemble', stack: 'XGBoost, Scikit-learn', pct: 100,
+        badge: 'deployed',
+        termText: '> executing hybrid_ensemble.py...',
+        logs: [
+          { ts: '[00:01]', msg: '✓ datasets merged & cleaned', cls: 'ok' },
+          { ts: '[00:02]', msg: '→ balancing classes with SMOTE...', cls: 'info' },
+          { ts: '[00:03]', msg: '  training ExtraTrees/SVM phase', cls: '' },
+          { ts: '[00:04]', msg: '✓ meta-learner converged', cls: 'ok' },
+          { ts: '[00:05]', msg: '✓ ensemble trained (Recall: 82%)', cls: 'ok' },
+        ]
+      },
+      {
+        id: '03', name: 'Customer Behavior', year: '2024', type: 'analysis', stack: 'Python, SQL, BI', pct: 100,
         badge: 'deployed',
         termText: '> running behavior_analysis.py...',
         logs: [
@@ -2662,19 +3671,7 @@
         ]
       },
       {
-        id: '02', name: 'Supply Chain Opt.', year: '2024', type: 'full-stack', stack: 'Flask, PostgreSQL', pct: 92,
-        badge: 'in review',
-        termText: '> starting flask server...',
-        logs: [
-          { ts: '[00:01]', msg: '✓ DB connection OK', cls: 'ok' },
-          { ts: '[00:02]', msg: '→ loading routes...', cls: 'info' },
-          { ts: '[00:03]', msg: '  attendance module ON', cls: '' },
-          { ts: '[00:04]', msg: '✓ frontend compiled', cls: 'ok' },
-          { ts: '[00:05]', msg: '→ server live :5000', cls: 'info' },
-        ]
-      },
-      {
-        id: '03', name: 'E-commerce Sales', year: '2023', type: 'dashboard', stack: 'Power BI, DAX', pct: 100,
+        id: '04', name: 'E-commerce Sales', year: '2023', type: 'dashboard', stack: 'Power BI, DAX', pct: 100,
         badge: 'deployed',
         termText: '> refreshing powerbi model...',
         logs: [
@@ -2683,18 +3680,6 @@
           { ts: '[00:03]', msg: '  YoY growth: +23.7%', cls: '' },
           { ts: '[00:04]', msg: '✓ report published', cls: 'ok' },
           { ts: '[00:05]', msg: '→ 60% faster reporting', cls: 'info' },
-        ]
-      },
-      {
-        id: '04', name: 'Diabetes Predictor', year: '2023', type: 'ml model', stack: 'Python, scikit-learn', pct: 100,
-        badge: 'deployed',
-        termText: '> evaluating svm_model.pkl...',
-        logs: [
-          { ts: '[00:01]', msg: '✓ PIMA dataset loaded', cls: 'ok' },
-          { ts: '[00:02]', msg: '→ feature scaling...', cls: 'info' },
-          { ts: '[00:03]', msg: '  accuracy: 82.4%', cls: '' },
-          { ts: '[00:04]', msg: '✓ confusion matrix OK', cls: 'ok' },
-          { ts: '[00:05]', msg: '→ model saved .pkl', cls: 'info' },
         ]
       },
       {
@@ -2913,6 +3898,51 @@
         });
       });
     }
+  </script>
+  <script>
+    const roles = [
+      "Data Analyst",
+      "Machine Learning",
+      "Data Visualization",
+      "Problem Solving"
+    ];
+
+    let roleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const speed = 60;
+    const eraseSpeed = 30;
+    const delayBetween = 1200;
+
+    const roleElement = document.getElementById("hero-title");
+
+    function typeEffect() {
+      const currentRole = roles[roleIndex];
+
+      if (!isDeleting) {
+        roleElement.innerHTML = "// " + currentRole.substring(0, charIndex + 1);
+        charIndex++;
+
+        if (charIndex === currentRole.length) {
+          isDeleting = true;
+          setTimeout(typeEffect, delayBetween);
+          return;
+        }
+      } else {
+        roleElement.innerHTML = "// " + currentRole.substring(0, charIndex - 1);
+        charIndex--;
+
+        if (charIndex === 0) {
+          isDeleting = false;
+          roleIndex = (roleIndex + 1) % roles.length;
+        }
+      }
+
+      setTimeout(typeEffect, isDeleting ? eraseSpeed : speed);
+    }
+
+    // start animation after slight delay
+    setTimeout(typeEffect, 500);
   </script>
 </body>
 
