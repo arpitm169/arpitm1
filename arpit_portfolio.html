@@ -21,6 +21,7 @@
       --electric: #00f7ff;
       --yellow-bright: #fbff00;
       --purple: #a855f7;
+      --pink: #ff0080;
       --green: #00ff9d;
       --red: #ff3c3c;
       --text: #e8e8e8;
@@ -31,6 +32,7 @@
       --glow-orange: 0 0 20px rgba(255, 106, 0, 0.4);
       --glow-blue: 0 0 20px rgba(0, 212, 255, 0.4);
       --glow-purple: 0 0 20px rgba(168, 85, 247, 0.4);
+      --glow-pink: 0 0 25px rgba(255, 0, 128, 0.7);
       --font: 'JetBrains Mono', 'Fira Code', monospace;
     }
 
@@ -1044,6 +1046,17 @@
       box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
     }
 
+    .skill-icon.pink {
+      color: var(--pink);
+      background: rgba(255, 0, 128, 0.08);
+      border-color: rgba(255, 0, 128, 0.25);
+    }
+
+    .skill-card:hover .skill-icon.pink {
+      background: rgba(255, 0, 128, 0.15);
+      box-shadow: 0 0 15px rgba(255, 0, 128, 0.5), inset 0 0 8px rgba(255, 0, 128, 0.2);
+    }
+
     .skill-icon.green {
       color: var(--green);
       background: rgba(0, 255, 157, 0.05);
@@ -1115,6 +1128,11 @@
       filter: drop-shadow(0 0 3px rgba(168, 85, 247, 0.4));
     }
 
+    .skill-ring-fill.pink {
+      stroke: var(--pink);
+      filter: drop-shadow(0 0 6px rgba(255, 0, 128, 0.8));
+    }
+
     .skill-ring-fill.green {
       stroke: var(--green);
       filter: drop-shadow(0 0 3px rgba(0, 255, 157, 0.4));
@@ -1181,6 +1199,10 @@
       background: linear-gradient(90deg, var(--purple), rgba(168, 85, 247, 0.3));
     }
 
+    .skill-exp-fill.pink {
+      background: linear-gradient(90deg, var(--pink), rgba(255, 0, 128, 0.5));
+    }
+
     .skill-exp-fill.green {
       background: linear-gradient(90deg, var(--green), rgba(0, 255, 157, 0.3));
     }
@@ -1238,6 +1260,10 @@
 
     .skill-card[data-color="purple"] .corner-accent {
       border-color: var(--purple);
+    }
+
+    .skill-card[data-color="pink"] .corner-accent {
+      border-color: var(--pink);
     }
 
     .skill-card[data-color="green"] .corner-accent {
@@ -1328,6 +1354,7 @@
       position: relative;
       margin-bottom: 4.5rem;
       opacity: 0;
+      transform-origin: 0% 50%;
       transform: translateY(40px) scale(0.95);
       transition:
         opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
@@ -1352,15 +1379,49 @@
     .timeline-dot {
       position: absolute;
       left: -4.6rem;
-      top: 1.05rem;
+      top: 50%;
+      transform: translateY(-50%);
       width: 18px;
       height: 18px;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
       border-radius: 50%;
       background: var(--orange);
       border: 3px solid var(--bg2);
       box-shadow: 0 0 0 2px var(--orange);
       z-index: 3;
       transition: background 0.4s, box-shadow 0.4s;
+    }
+
+    .scroll-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--green), 0 0 20px rgba(0, 255, 157, 0.4);
+      z-index: 4;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      /* Centered exactly on the SVG cord */
+      animation: pulse-scroll-dot 2s infinite ease-in-out;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    @keyframes pulse-scroll-dot {
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 0 10px var(--green), 0 0 20px rgba(0, 255, 157, 0.4);
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.15);
+        box-shadow: 0 0 14px var(--green), 0 0 26px rgba(0, 255, 157, 0.6);
+      }
     }
 
     .timeline-year {
@@ -2807,23 +2868,24 @@
         <div class="skill-category" data-cat="web">
           <div class="skill-category-header">
             <div class="skill-category-icon"
-              style="border-color:var(--purple);color:var(--purple);background:rgba(168,85,247,0.06);"><i
-                class="fas fa-laptop-code"></i></div>
+              style="border-color:var(--pink);color:var(--pink);background:rgba(255,0,128,0.1);box-shadow: 0 0 10px rgba(255,0,128,0.2);">
+              <i class="fas fa-laptop-code"></i>
+            </div>
             <span class="skill-category-label">Web Development</span>
             <span class="skill-category-count">4 skills</span>
           </div>
           <div class="skills-grid">
-            <div class="skill-card" data-color="purple" style="animation-delay:0.3s">
+            <div class="skill-card" data-color="pink" style="animation-delay:0.3s">
               <div class="corner-accent tl"></div>
               <div class="corner-accent tr"></div>
               <div class="corner-accent bl"></div>
               <div class="corner-accent br"></div>
               <div class="skill-card-top">
-                <div class="skill-icon purple"><i class="fab fa-html5"></i></div>
+                <div class="skill-icon pink"><i class="fab fa-html5"></i></div>
                 <div class="skill-ring-wrap">
                   <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
                     <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
-                    <circle class="skill-ring-fill purple" cx="21" cy="21" r="18" data-pct="88"></circle>
+                    <circle class="skill-ring-fill pink" cx="21" cy="21" r="18" data-pct="88"></circle>
                   </svg>
                   <span class="skill-ring-pct">88%</span>
                 </div>
@@ -2831,21 +2893,21 @@
               <div class="skill-name">HTML</div>
               <div class="skill-level">Advanced</div>
               <div class="skill-exp-bar">
-                <div class="skill-exp-fill purple" data-width="88"></div>
+                <div class="skill-exp-fill pink" data-width="88"></div>
               </div>
             </div>
 
-            <div class="skill-card" data-color="purple" style="animation-delay:0.35s">
+            <div class="skill-card" data-color="pink" style="animation-delay:0.35s">
               <div class="corner-accent tl"></div>
               <div class="corner-accent tr"></div>
               <div class="corner-accent bl"></div>
               <div class="corner-accent br"></div>
               <div class="skill-card-top">
-                <div class="skill-icon purple"><i class="fab fa-css3-alt"></i></div>
+                <div class="skill-icon pink"><i class="fab fa-css3-alt"></i></div>
                 <div class="skill-ring-wrap">
                   <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
                     <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
-                    <circle class="skill-ring-fill purple" cx="21" cy="21" r="18" data-pct="85"></circle>
+                    <circle class="skill-ring-fill pink" cx="21" cy="21" r="18" data-pct="85"></circle>
                   </svg>
                   <span class="skill-ring-pct">85%</span>
                 </div>
@@ -2853,21 +2915,21 @@
               <div class="skill-name">CSS</div>
               <div class="skill-level">Advanced</div>
               <div class="skill-exp-bar">
-                <div class="skill-exp-fill purple" data-width="85"></div>
+                <div class="skill-exp-fill pink" data-width="85"></div>
               </div>
             </div>
 
-            <div class="skill-card" data-color="purple" style="animation-delay:0.4s">
+            <div class="skill-card" data-color="pink" style="animation-delay:0.4s">
               <div class="corner-accent tl"></div>
               <div class="corner-accent tr"></div>
               <div class="corner-accent bl"></div>
               <div class="corner-accent br"></div>
               <div class="skill-card-top">
-                <div class="skill-icon purple"><i class="fab fa-js-square"></i></div>
+                <div class="skill-icon pink"><i class="fab fa-js-square"></i></div>
                 <div class="skill-ring-wrap">
                   <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
                     <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
-                    <circle class="skill-ring-fill purple" cx="21" cy="21" r="18" data-pct="75"></circle>
+                    <circle class="skill-ring-fill pink" cx="21" cy="21" r="18" data-pct="75"></circle>
                   </svg>
                   <span class="skill-ring-pct">75%</span>
                 </div>
@@ -2875,21 +2937,21 @@
               <div class="skill-name">JavaScript</div>
               <div class="skill-level">Intermediate</div>
               <div class="skill-exp-bar">
-                <div class="skill-exp-fill purple" data-width="75"></div>
+                <div class="skill-exp-fill pink" data-width="75"></div>
               </div>
             </div>
 
-            <div class="skill-card" data-color="purple" style="animation-delay:0.45s">
+            <div class="skill-card" data-color="pink" style="animation-delay:0.45s">
               <div class="corner-accent tl"></div>
               <div class="corner-accent tr"></div>
               <div class="corner-accent bl"></div>
               <div class="corner-accent br"></div>
               <div class="skill-card-top">
-                <div class="skill-icon purple"><i class="fab fa-react"></i></div>
+                <div class="skill-icon pink"><i class="fab fa-react"></i></div>
                 <div class="skill-ring-wrap">
                   <svg class="skill-ring" width="42" height="42" viewBox="0 0 42 42">
                     <circle class="skill-ring-bg" cx="21" cy="21" r="18"></circle>
-                    <circle class="skill-ring-fill purple" cx="21" cy="21" r="18" data-pct="70"></circle>
+                    <circle class="skill-ring-fill pink" cx="21" cy="21" r="18" data-pct="70"></circle>
                   </svg>
                   <span class="skill-ring-pct">70%</span>
                 </div>
@@ -2897,7 +2959,7 @@
               <div class="skill-name">React</div>
               <div class="skill-level">Intermediate</div>
               <div class="skill-exp-bar">
-                <div class="skill-exp-fill purple" data-width="70"></div>
+                <div class="skill-exp-fill pink" data-width="70"></div>
               </div>
             </div>
           </div>
@@ -3042,15 +3104,16 @@
         <div class="timeline" id="proj-timeline">
           <svg class="timeline-svg" id="timeline-svg" height="100%"
             style="height:100%;position:absolute;left:0;top:0;width:7rem;overflow:visible;pointer-events:none;z-index:1;"></svg>
+          <div class="scroll-dot" id="timeline-scroll-dot"></div>
 
           <!-- PROJECT 1 -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-year">2026</div>
             <div class="project-card">
               <div class="project-category">
                 <span>Academic Projects</span>
-                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
+                <a href="https://github.com/arpitm169/Student-Portal" target="_blank" class="project-link-icon"
+                  aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
                 <div class="project-title">Student-Portal</div>
@@ -3079,17 +3142,19 @@
           <!-- PROJECT 2 -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-year">2025</div>
             <div class="project-card">
               <div class="project-category">
                 <span>Machine Learning / Healthcare AI</span>
-                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
+                <a href="https://github.com/arpitm169/Diabetes_Prediction-Model/tree/main" target="_blank"
+                  class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
                 <div class="project-title">Type 2 Diabetes Prediction</div>
                 <div class="project-num">[02/05]</div>
               </div>
-              <p class="project-desc">Built a Hybrid Stacking Ensemble using the Pima Indians Diabetes dataset. Developed a complete pipeline including SMART feature engineering, class imbalance handling with SMOTE, and hyperparameter-tuned SVM, XGBoost, and Extra Trees models.</p>
+              <p class="project-desc">Built a Hybrid Stacking Ensemble using the Pima Indians Diabetes dataset.
+                Developed a complete pipeline including SMART feature engineering, class imbalance handling with SMOTE,
+                and hyperparameter-tuned SVM, XGBoost, and Extra Trees models.</p>
               <div class="project-tags">
                 <span class="tag">#Python</span>
                 <span class="tag purple">#Scikit-learn</span>
@@ -3107,23 +3172,24 @@
           <!-- PROJECT 3 -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-year">2024</div>
             <div class="project-card">
               <div class="project-category">
-                <span>Personal Projects</span>
-                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
+                <span>Data Analysis / Visualization</span>
+                <a href="https://github.com/arpitm169/IPL---Analytics" target="_blank" class="project-link-icon"
+                  aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
-                <div class="project-title">Customer Behavior Analysis</div>
+                <div class="project-title">IPL Analysis Dashboard (2008–2025)</div>
                 <div class="project-num">[03/05]</div>
               </div>
-              <p class="project-desc">Analyzed customer purchase patterns, churn indicators, and segment profiles using Python and SQL. Built interactive Power BI dashboards to surface actionable retention strategies for the business team.</p>
+              <p class="project-desc">Interactive Power BI dashboard analyzing Indian Premier League data. Features
+                dynamic filters, Orange/Purple cap metrics, and comprehensive team comparisons. Visualized the strong
+                correlation between boundary-heavy strategies and match success rates.</p>
               <div class="project-tags">
-                <span class="tag">#Python</span>
-                <span class="tag">#SQL</span>
                 <span class="tag blue">#PowerBI</span>
-                <span class="tag">#EDA</span>
-                <span class="tag blue">#Dashboard</span>
+                <span class="tag">#DataVisualization</span>
+                <span class="tag">#Analytics</span>
+                <span class="tag blue">#Excel</span>
               </div>
               <div class="project-terminal-bar">
                 <div class="term-dot"></div>
@@ -3136,22 +3202,25 @@
           <!-- PROJECT 4 -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-year">2023</div>
             <div class="project-card">
               <div class="project-category">
-                <span>Personal Projects</span>
-                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
+                <span>Frontend Web Development</span>
+                <a href="https://github.com/arpitm169/Spotify_clone" target="_blank" class="project-link-icon"
+                  aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
-                <div class="project-title">E-commerce Sales Analysis</div>
+                <div class="project-title">Spotify Clone</div>
                 <div class="project-num">[04/05]</div>
               </div>
-              <p class="project-desc">End-to-end sales intelligence dashboard in Power BI covering regional performance, product trends, YoY growth, and forecasting. Reduced reporting time by 60% through automated refresh pipelines.</p>
+              <p class="project-desc">Built a Spotify-inspired music streaming web application with a modern, responsive
+                UI using React.js and Tailwind CSS. Implemented reusable components, client-side routing, and
+                interactive layouts to deliver a seamless user experience. Optimized performance using Vite and scalable
+                frontend architecture practices.</p>
               <div class="project-tags">
-                <span class="tag blue">#PowerBI</span>
-                <span class="tag">#DAX</span>
-                <span class="tag blue">#DataModeling</span>
-                <span class="tag">#Forecasting</span>
+                <span class="tag blue">#React.js</span>
+                <span class="tag">#TailwindCSS</span>
+                <span class="tag yellow">#Vite</span>
+                <span class="tag purple">#ReactRouter</span>
               </div>
               <div class="project-terminal-bar">
                 <div class="term-dot"></div>
@@ -3164,25 +3233,25 @@
           <!-- PROJECT 5 -->
           <div class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-year">2023</div>
             <div class="project-card">
               <div class="project-category">
                 <span>Personal Projects</span>
-                <a href="#" class="project-link-icon" aria-label="Project Link"><i class="fas fa-link"></i></a>
+                <a href="https://github.com/arpitm169/Customer-Data-Analysis" target="_blank" class="project-link-icon"
+                  aria-label="Project Link"><i class="fas fa-link"></i></a>
               </div>
               <div class="project-header">
-                <div class="project-title">Smart Resume Analyzer</div>
+                <div class="project-title">Customer Behavior Analysis</div>
                 <div class="project-num">[05/05]</div>
               </div>
-              <p class="project-desc">NLP-powered Streamlit application that parses resumes, extracts skills, matches
-                job descriptions, and provides improvement suggestions — helping candidates optimize their resumes for
-                ATS systems.</p>
+              <p class="project-desc">Analyzed customer purchase patterns, churn indicators, and segment profiles using
+                Python and SQL. Built interactive Power BI dashboards to surface actionable retention strategies for the
+                business team.</p>
               <div class="project-tags">
                 <span class="tag">#Python</span>
-                <span class="tag blue">#Streamlit</span>
-                <span class="tag purple">#NLP</span>
-                <span class="tag">#spaCy</span>
-                <span class="tag purple">#ATS</span>
+                <span class="tag">#SQL</span>
+                <span class="tag blue">#PowerBI</span>
+                <span class="tag">#EDA</span>
+                <span class="tag blue">#Dashboard</span>
               </div>
               <div class="project-terminal-bar">
                 <div class="term-dot"></div>
@@ -3536,11 +3605,17 @@
         return { x: r.left + r.width / 2 - tlRect.left, y: r.top + r.height / 2 - tlRect.top + timeline.scrollTop };
       });
       const waveAmp = 60;
+      let masterD = '';
       for (let i = 0; i < points.length - 1; i++) {
         const p1 = points[i], p2 = points[i + 1], seg = segmentColors[i % segmentColors.length], dir = i % 2 === 0 ? 1 : -1;
-        const quarterY = p1.y + (p2.y - p1.y) * 0.25, threeQuarterY = p1.y + (p2.y - p1.y) * 0.75;
+        const startY = p1.y + 20, endY = p2.y - 20;
+        const quarterY = startY + (endY - startY) * 0.25, threeQuarterY = startY + (endY - startY) * 0.75;
         const cp1x = p1.x + dir * waveAmp * 1.2, cp2x = p2.x - dir * waveAmp * 1.2;
-        const pathD = `M ${p1.x} ${p1.y} C ${cp1x} ${quarterY}, ${cp2x} ${threeQuarterY}, ${p2.x} ${p2.y}`;
+        const subD = `L ${p1.x} ${startY} C ${cp1x} ${quarterY}, ${cp2x} ${threeQuarterY}, ${p2.x} ${endY} L ${p2.x} ${p2.y}`;
+        const pathD = `M ${p1.x} ${p1.y} ` + subD;
+        if (i === 0) masterD += `M ${p1.x} ${p1.y} `;
+        masterD += subD + " ";
+
         const glowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         glowPath.setAttribute('d', pathD); glowPath.setAttribute('fill', 'none');
         glowPath.setAttribute('stroke', seg.color); glowPath.setAttribute('stroke-width', '5');
@@ -3555,7 +3630,62 @@
         svg.appendChild(path);
         requestAnimationFrame(() => { requestAnimationFrame(() => { path.style.strokeDashoffset = '0'; }); });
       }
+
+      // Draw standard terminal origin nodes to anchor the start and end of the floating timeline
+      const drawTerminalNode = (x, y, colorStr, glowIdx) => {
+        const outer = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        outer.setAttribute('cx', x); outer.setAttribute('cy', y); outer.setAttribute('r', '8');
+        outer.setAttribute('fill', 'none'); outer.setAttribute('stroke', colorStr); outer.setAttribute('stroke-width', '2');
+        outer.setAttribute('filter', `url(#glow-seg-${glowIdx})`);
+
+        const inner = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        inner.setAttribute('cx', x); inner.setAttribute('cy', y); inner.setAttribute('r', '3');
+        inner.setAttribute('fill', colorStr);
+        inner.setAttribute('filter', `url(#glow-seg-${glowIdx})`);
+
+        svg.appendChild(outer);
+        svg.appendChild(inner);
+      };
+      const lastIdx = points.length - 1;
+      drawTerminalNode(points[0].x, points[0].y, segmentColors[0].color, 0);
+      drawTerminalNode(points[lastIdx].x, points[lastIdx].y, segmentColors[(lastIdx - 1) % segmentColors.length].color, (lastIdx - 1) % segmentColors.length);
+
+      // Add hidden master path for getPointAtLength interpolation
+      if (!document.getElementById('master-timeline-path')) {
+        const master = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        master.id = 'master-timeline-path';
+        master.style.display = 'none';
+        svg.appendChild(master);
+      }
+      document.getElementById('master-timeline-path').setAttribute('d', masterD);
     }
+
+    // Add scroll tracking logic for the dot
+    const syncScrollDot = () => {
+      const scrollDot = document.getElementById('timeline-scroll-dot');
+      const masterPath = document.getElementById('master-timeline-path');
+      const svgContainer = document.getElementById('timeline-svg');
+      if (!scrollDot || !masterPath || !svgContainer) return;
+
+      const svgRect = svgContainer.getBoundingClientRect();
+      const vh = window.innerHeight;
+
+      // Screen tracker set to 45% of viewport height (reading eye level)
+      const trackerY = vh * 0.45;
+
+      let progress = (trackerY - svgRect.top) / svgRect.height;
+      progress = Math.max(0, Math.min(1, progress));
+
+      const totalLen = masterPath.getTotalLength();
+      if (totalLen > 0) {
+        const pt = masterPath.getPointAtLength(progress * totalLen);
+        scrollDot.style.opacity = (progress > 0.005 && progress < 0.995) ? '1' : '0';
+        scrollDot.style.left = `${pt.x}px`;
+        scrollDot.style.top = `${pt.y}px`;
+      }
+    };
+
+    window.addEventListener('scroll', () => { requestAnimationFrame(syncScrollDot); });
     window.addEventListener('resize', () => { setTimeout(drawTimelineSVG, 200); });
 
     /* ===== SCROLL REVEAL ===== */
@@ -3659,8 +3789,32 @@
         ]
       },
       {
-        id: '03', name: 'Customer Behavior', year: '2024', type: 'analysis', stack: 'Python, SQL, BI', pct: 100,
-        badge: 'deployed',
+        id: '03', name: 'IPL Analysis', year: '2026', type: 'dashboard', stack: 'Power BI, Excel', pct: 100,
+        badge: 'Completed',
+        termText: '> loading IPL data (2008-2025)...',
+        logs: [
+          { ts: '[00:01]', msg: '✓ match history processed', cls: 'ok' },
+          { ts: '[00:02]', msg: '→ analyzing player caps...', cls: 'info' },
+          { ts: '[00:03]', msg: '  highest runs: RCB', cls: '' },
+          { ts: '[00:04]', msg: '✓ boundary correlation mapped', cls: 'ok' },
+          { ts: '[00:05]', msg: '→ dashboard active', cls: 'info' },
+        ]
+      },
+      {
+        id: '04', name: 'Spotify Clone', year: '2026', type: 'frontend UI', stack: 'React, Tailwind, Vite', pct: 100,
+        badge: 'Completed',
+        termText: '> launching dev server...',
+        logs: [
+          { ts: '[00:01]', msg: '✓ optimized build via Vite', cls: 'ok' },
+          { ts: '[00:02]', msg: '→ hydrating generic DOM...', cls: 'info' },
+          { ts: '[00:03]', msg: '  dynamic routing setup', cls: '' },
+          { ts: '[00:04]', msg: '✓ components rendering', cls: 'ok' },
+          { ts: '[00:05]', msg: '→ UI replication matched', cls: 'info' },
+        ]
+      },
+      {
+        id: '05', name: 'Customer Behavior', year: '2025', type: 'analysis', stack: 'Python, SQL, BI', pct: 100,
+        badge: 'Completed',
         termText: '> running behavior_analysis.py...',
         logs: [
           { ts: '[00:01]', msg: '✓ dataset loaded (12k rows)', cls: 'ok' },
@@ -3668,30 +3822,6 @@
           { ts: '[00:03]', msg: '  churn rate: 18.3%', cls: '' },
           { ts: '[00:04]', msg: '✓ dashboard published', cls: 'ok' },
           { ts: '[00:05]', msg: '→ insights ready', cls: 'info' },
-        ]
-      },
-      {
-        id: '04', name: 'E-commerce Sales', year: '2023', type: 'dashboard', stack: 'Power BI, DAX', pct: 100,
-        badge: 'deployed',
-        termText: '> refreshing powerbi model...',
-        logs: [
-          { ts: '[00:01]', msg: '✓ data source synced', cls: 'ok' },
-          { ts: '[00:02]', msg: '→ computing DAX measures', cls: 'info' },
-          { ts: '[00:03]', msg: '  YoY growth: +23.7%', cls: '' },
-          { ts: '[00:04]', msg: '✓ report published', cls: 'ok' },
-          { ts: '[00:05]', msg: '→ 60% faster reporting', cls: 'info' },
-        ]
-      },
-      {
-        id: '05', name: 'Smart Resume Analyzer', year: '2023', type: 'nlp app', stack: 'Python, spaCy, Streamlit', pct: 95,
-        badge: 'beta',
-        termText: '> launching streamlit app...',
-        logs: [
-          { ts: '[00:01]', msg: '✓ spaCy model loaded', cls: 'ok' },
-          { ts: '[00:02]', msg: '→ parsing resume...', cls: 'info' },
-          { ts: '[00:03]', msg: '  14 skills extracted', cls: '' },
-          { ts: '[00:04]', msg: '✓ ATS score: 87/100', cls: 'ok' },
-          { ts: '[00:05]', msg: '→ suggestions ready', cls: 'info' },
         ]
       }
     ];
